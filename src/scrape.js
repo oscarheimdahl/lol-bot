@@ -10,7 +10,10 @@ module.exports = async champ => {
         .first()
         .children('a');
 
-      let scrape = { items: [], message: '' };
+      let scrape = {
+        items: [],
+        message: 'Most frequent core build on ' + champ.toUpperCase()
+      };
       links.each((i, link) => {
         let img = link.children[1];
         let imgSrc = img.attribs.src;
@@ -18,7 +21,7 @@ module.exports = async champ => {
         scrape.items.push(itemURL);
       });
       if (scrape.items.length < 4)
-        scrape.message = 'Not yet complete for this patch! ❌';
+        scrape.message += '\n\n❌ Not yet complete for this patch! ❌';
       return scrape;
     });
 
