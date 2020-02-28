@@ -12,7 +12,7 @@ module.exports = async champ => {
 
       let scrape = {
         items: [],
-        message: 'Most frequent core build on ' + champ.toUpperCase()
+        message: "Here's the most frequent core build:"
       };
       links.each((i, link) => {
         let img = link.children[1];
@@ -20,8 +20,10 @@ module.exports = async champ => {
         let itemURL = 'http:' + imgSrc;
         scrape.items.push(itemURL);
       });
-      if (scrape.items.length < 4)
-        scrape.message += '\n\n❌ Not yet complete for this patch! ❌';
+      if (scrape.items.length < 4) {
+        scrape.items = [];
+        scrape.message = '\n\n❌ Not yet complete for this patch! ❌';
+      }
       return scrape;
     });
 

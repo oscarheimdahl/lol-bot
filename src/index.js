@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const scrape = require('./scrape');
-const { champs, champsLowercase } = require('./champs');
+const { champsUppercase, champsLowercase, champsNick } = require('./champs');
 
 require('dotenv').config();
 
@@ -12,23 +12,35 @@ bot.on('ready', () => {
 });
 
 bot.on('message', async msg => {
-  if (msg.content.charAt(0) !== '!') return;
-  //the first word without '!'
-  if (msg.content.match(/'| |\./)) {
-    msg.channel.send(
-      'Write champs without space or special character.\nDr. Mundo → drmundo'
-    );
+  if (msg.content.slice(0, 6) !== '!build') return;
+  const champ = msg.content.slice(7, msg.content.length).toLowerCase();
+  if (!champFound(champ)) {
+    msg.channel.send('Champ not found');
     return;
   }
-
-  const firstWord = msg.content.split(' ')[0];
-  const champ = firstWord.slice(1, msg.content.length).toLowerCase();
-  if (!champsLowercase.includes(champ) && !champs.includes(champ)) return;
-  const champIndex = champsLowercase.indexOf(champ);
-
-  console.log('Scraping after ' + champs[champIndex] + ':s build!');
+  const champIndex = getChampIndex(champ);
+  msg.channel.send(
+    'Scraping champion.gg for the build of ' + champsUppercase[champIndex]
+  );
   const res = await scrape(champsLowercase[champIndex]);
   msg.channel.send(res.message, {
     files: res.items
   });
 });
+
+champFound = champ => {
+  return (
+    champsLowercase.includes(champ) ||
+    champsUppercase.includes(champ) ||
+    champsNick.includes(champ)
+  );
+};
+
+getChampIndex = champ => {
+  let i = champsLowercase.indexOf(champ);
+  if (i > 0) return i;
+  i = champsUppercase.indexOf(champ);
+  if (i > 0) return i;
+  i = champsNick.indexOf(champ);
+  return i;
+};
