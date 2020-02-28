@@ -19,9 +19,10 @@ bot.on('message', async msg => {
     return;
   }
   const champIndex = getChampIndex(champ);
-  msg.channel.send(
-    'Scraping champion.gg for the build of ' + champsUppercase[champIndex]
-  );
+  const info =
+    'Scraping champion.gg for the build of ' + champsUppercase[champIndex];
+  console.log(info);
+  msg.channel.send(info);
   const res = await scrape(champsLowercase[champIndex]);
   msg.channel.send(res.message, {
     files: res.items
