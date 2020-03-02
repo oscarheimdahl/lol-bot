@@ -9,6 +9,10 @@ bot.login(process.env.TOKEN);
 
 bot.on('ready', () => {
   console.log('BOT READY ✌');
+  bot.user
+    .setActivity('!build [champ]', { type: 'PLAYING' })
+    .then()
+    .catch(console.error);
 });
 
 bot.on('message', async msg => {
