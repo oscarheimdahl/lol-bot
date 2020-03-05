@@ -32,6 +32,8 @@ scrapeBuild = async (champ, role) => {
 };
 
 scrapeRunes = async (champ, role) => {
+  let smallSpace = '  ';
+  let bigSpace = '        ';
   const scrape = await axios
     .get(`https://champion.gg/champion/${champ}/${role}`)
     .then(res => {
@@ -39,53 +41,37 @@ scrapeRunes = async (champ, role) => {
       let runes1 = $('.Description__Title-jfHpQH.bJtdXG', '#app');
       let runes2 = $('.Description__Title-jfHpQH.eOLOWg', '#app');
       message = '\n';
-      runes1.each(function(i, rune) {
-        if (i === 0)
-          message +=
-            parseRune(
-              $(this)
-                .contents()
-                .text()
-            ) + '\n';
-        else if (i < 5)
-          message +=
-            '      ' +
-            $(this)
-              .contents()
-              .text() +
-            '\n';
+      runes1.each(function(i, _) {
+        const runeText = $(this)
+          .contents()
+          .text();
+        if (i === 0) message += parseRuneIcon(runeText) + smallSpace;
+        else if (i === 1) message += runeText + '\n';
+        else if (i < 5) message += bigSpace + runeText + '\n';
       });
-      runes2.each(function(i, rune) {
-        if (i === 0)
-          message +=
-            parseRune(
-              $(this)
-                .contents()
-                .text()
-            ) + '\n';
-        else if (i < 3)
-          message +=
-            '      ' +
-            $(this)
-              .contents()
-              .text() +
-            '\n';
+      message += '\n';
+      runes2.each(function(i, _) {
+        const runeText = $(this)
+          .contents()
+          .text();
+        if (i === 0) message += parseRuneIcon(runeText) + smallSpace;
+        else if (i === 1) message += runeText + '\n';
+        else if (i < 3) message += bigSpace + runeText + '\n';
       });
-      message += '⚪\n';
-      runes1.each(function(i, rune) {
-        if (i > 4 && i < 8)
-          message +=
-            '      ' +
-            $(this)
-              .contents()
-              .text() +
-            '\n';
+      message += '\n';
+      message += '⚪' + smallSpace;
+      runes1.each(function(i, _) {
+        const runeText = $(this)
+          .contents()
+          .text();
+        if (i === 5) message += runeText + '\n';
+        else if (i > 5 && i < 8) message += bigSpace + runeText + '\n';
       });
     });
   return { message };
 };
 
-function parseRune(runePage) {
+function parseRuneIcon(runePage) {
   switch (runePage) {
     case 'Domination':
       return '🔴';
