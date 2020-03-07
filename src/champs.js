@@ -433,7 +433,7 @@ let champsNick = [
   'tentacle',
   'punch',
   'engineer',
-  'blood',
+  'vlad',
   'bear',
   'wolf',
   'ape',
