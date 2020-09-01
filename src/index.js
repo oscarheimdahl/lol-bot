@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const { scrapeBuild, scrapeRunes } = require('./scrape');
-const { champsUppercase, champsLowercase, champsNick } = require('./champs');
+const { champsNicknames } = require('./champs');
 
 require('dotenv').config();
 
@@ -15,48 +15,29 @@ bot.on('ready', () => {
     .catch(console.error);
 });
 
-bot.on('message', msg => {
-  let res = '';
+bot.on('message', (msg) => {
   const words = msg.content.toLowerCase().split(' ');
-  if (words[0] === '!build') sendBuild(msg, words);
-  else if (words[0] === '!runes') sendRunes(msg, words);
+  const champ = getChamp(words[1]);
+  const role = getRole(words[2]);
+  if (words[0] === '!build') sendBuild(msg, champ, role);
+  else if (words[0] === '!runes') sendRunes(msg, champ, role);
 });
 
-sendBuild = async (msg, words) => {
-  const champ = words[1];
-  const role = getRole(words[2]);
-  if (!champFound(champ)) {
-    msg.channel.send('Champ not found');
-    return;
-  }
-  const champIndex = getChampIndex(champ);
-  const info =
-    'Scraping champion.gg for the build of ' + champsUppercase[champIndex];
-  console.log(info);
-  msg.channel.send(info);
-  const res = await scrapeBuild(champsLowercase[champIndex], role);
+sendRunes = async (msg, champ, role) => {
+  msg.channel.send(`Scraping champion.gg for the runes of *${champ}*`);
+  const res = await scrapeRunes(champ, role);
+  msg.channel.send('```' + res.message + '```');
+};
+
+sendBuild = async (msg, champ, role) => {
+  msg.channel.send(`Scraping champion.gg for the build of *${champ}*`);
+  const res = await scrapeBuild(champ, role);
   msg.channel.send(res.message, {
-    files: res.items
+    files: res.items,
   });
 };
 
-sendRunes = async (msg, words) => {
-  const champ = words[1];
-  const role = getRole(words[2]);
-  if (!champFound(champ)) {
-    msg.channel.send('Champ not found');
-    return;
-  }
-  const champIndex = getChampIndex(champ);
-  const info =
-    'Scraping champion.gg for the runes of ' + champsUppercase[champIndex];
-  console.log(info);
-  msg.channel.send(info);
-  const res = await scrapeRunes(champsLowercase[champIndex], role);
-  msg.channel.send(res.message);
-};
-// scrapeRunes('janna', '');
-getRole = role => {
+getRole = (role) => {
   const top = ['top', 'topp'];
   const jungle = ['jungle', 'jung', 'jg', 'jgl'];
   const middle = ['mid', 'middle'];
@@ -70,15 +51,8 @@ getRole = role => {
   return '';
 };
 
-champFound = champ => {
-  return champsLowercase.includes(champ) || champsNick.includes(champ);
-};
-
-getChampIndex = champ => {
-  let i = champsLowercase.indexOf(champ);
-  if (i > 0) return i;
-  i = champsUppercase.indexOf(champ);
-  if (i > 0) return i;
-  i = champsNick.indexOf(champ);
-  return i;
+getChamp = (name) => {
+  const champ = champsNicknames[name];
+  if (champ) return champ;
+  return name;
 };
