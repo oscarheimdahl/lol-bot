@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
-const { scrapeBuild, scrapeRunes } = require('./scrape');
+const { scrapeBuild, scrapeRunes, scrapeSkills } = require('./scrape');
 const { champsNicknames } = require('./champs');
 
 require('dotenv').config();
@@ -21,6 +21,7 @@ bot.on('message', (msg) => {
   const role = getRole(words[2]);
   if (words[0] === '!build') sendBuild(msg, champ, role);
   else if (words[0] === '!runes') sendRunes(msg, champ, role);
+  else if (words[0] === '!skills') sendSkills(msg, champ, role);
 });
 
 sendRunes = async (msg, champ, role) => {
@@ -35,6 +36,12 @@ sendBuild = async (msg, champ, role) => {
   msg.channel.send(res.message, {
     files: res.items,
   });
+};
+
+sendSkills = async (msg, champ, role) => {
+  msg.channel.send(`Scraping champion.gg for the skills of *${champ}*`);
+  const res = await scrapeSkills(champ, role);
+  msg.channel.send('```' + res.message + '```');
 };
 
 getRole = (role) => {
