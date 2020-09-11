@@ -90,10 +90,7 @@ scrapeSkills = async (champ, role) => {
         }
         i++;
       }
-      console.log(order);
-      console.log(Object.values(order));
-      message = 'skills';
-      return 'skills';
+      message = buildSkillsPrint(Object.values(order));
     })
     .catch((e) => {
       console.log(e)((message = notFound));
@@ -101,11 +98,38 @@ scrapeSkills = async (champ, role) => {
   return { message };
 };
 
-function buildSkills() {
-  let skills = '';
+function buildSkillsPrint(skills) {
+  let skillsPrint = '';
+  skillsPrint += '─────────────────────────────────────────────────';
+  skillsPrint += buildSkillRow(skills, 'Q', ' Ｑ', ' ・');
+  skillsPrint += buildSkillRow(skills, 'W', ' Ｗ', ' ・');
+  skillsPrint += buildSkillRow(skills, 'E', ' Ｅ', ' ・');
+  skillsPrint += buildSkillRow(skills, 'R', ' Ｒ', ' ・');
+  skillsPrint += '─────────────────────────────────────────────────\n';
+  skillsPrint += shortSkillRow(skills);
+  return skillsPrint;
+}
+
+function buildSkillRow(skills, spell, spellGlyph, nullGlyph) {
+  let skillsPrint = '';
+  skillsPrint += '\n';
+  //   skillsPrint += spell;
   for (let i = 0; i < 18; i++) {
-    const element = array[i];
+    skillsPrint += skills[i] === spell ? spellGlyph : nullGlyph;
   }
+  return skillsPrint;
+}
+
+function shortSkillRow(skills) {
+  const q = skills.lastIndexOf('Q');
+  const w = skills.lastIndexOf('W');
+  const e = skills.lastIndexOf('E');
+  if (q < w && w < e) return 'Ｑ ➜ Ｗ ➜ Ｅ';
+  if (q < w && e < w) return 'Ｑ ➜ Ｅ ➜ Ｗ';
+  if (w < q && q < e) return 'Ｗ ➜ Ｑ ➜ Ｅ';
+  if (w < q && e < q) return 'Ｗ ➜ Ｅ ➜ Ｑ';
+  if (e < w && w < q) return 'Ｅ ➜ Ｗ ➜ Ｑ';
+  if (e < q && q < w) return 'Ｅ ➜ Ｑ ➜ Ｗ';
 }
 
 function parseRuneIcon(runePage) {
