@@ -27,14 +27,14 @@ bot.on('message', (msg) => {
 });
 
 sendRunes = async (msg, champ, role) => {
-  console.log('Sending runes of' + champ);
+  console.log('Sending runes of ' + champ);
   msg.channel.send(`Scraping champion.gg for the runes of *${champ}*`);
   const res = await scrapeRunes(champ, role);
   msg.channel.send('```' + res.message + '```');
 };
 
 sendBuild = async (msg, champ, role) => {
-  console.log('Sending build of' + champ);
+  console.log('Sending build of ' + champ);
   msg.channel.send(`Scraping champion.gg for the build of *${champ}*`);
   const res = await scrapeBuild(champ, role);
   msg.channel.send(res.message, {
@@ -43,7 +43,7 @@ sendBuild = async (msg, champ, role) => {
 };
 
 sendSkills = async (msg, champ, role) => {
-  console.log('Sending skills of' + champ);
+  console.log('Sending skills of ' + champ);
   msg.channel.send(`Scraping champion.gg for the skills of *${champ}*`);
   const res = await scrapeSkills(champ, role);
   msg.channel.send('```' + res.message + '```');
