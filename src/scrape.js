@@ -98,12 +98,12 @@ scrapeSkills = async (champ, role) => {
 
 function buildSkillsPrint(skills) {
   let skillsPrint = '';
-  skillsPrint += '─────────────────────────────────────────────────';
+  skillsPrint += '───────────────────────────────────────────────────';
   skillsPrint += buildSkillRow(skills, 'Q', ' Ｑ', ' ・');
   skillsPrint += buildSkillRow(skills, 'W', ' Ｗ', ' ・');
   skillsPrint += buildSkillRow(skills, 'E', ' Ｅ', ' ・');
   skillsPrint += buildSkillRow(skills, 'R', ' Ｒ', ' ・');
-  skillsPrint += '─────────────────────────────────────────────────\n';
+  skillsPrint += '\n───────────────────────────────────────────────────\n';
   skillsPrint += shortSkillRow(skills);
   return skillsPrint;
 }
@@ -111,7 +111,6 @@ function buildSkillsPrint(skills) {
 function buildSkillRow(skills, spell, spellGlyph, nullGlyph) {
   let skillsPrint = '';
   skillsPrint += '\n';
-  //   skillsPrint += spell;
   for (let i = 0; i < 18; i++) {
     skillsPrint += skills[i] === spell ? spellGlyph : nullGlyph;
   }
@@ -122,12 +121,14 @@ function shortSkillRow(skills) {
   const q = skills.lastIndexOf('Q');
   const w = skills.lastIndexOf('W');
   const e = skills.lastIndexOf('E');
-  if (q < w && w < e) return 'Ｑ ➜ Ｗ ➜ Ｅ';
-  if (q < w && e < w) return 'Ｑ ➜ Ｅ ➜ Ｗ';
-  if (w < q && q < e) return 'Ｗ ➜ Ｑ ➜ Ｅ';
-  if (w < q && e < q) return 'Ｗ ➜ Ｅ ➜ Ｑ';
-  if (e < w && w < q) return 'Ｅ ➜ Ｗ ➜ Ｑ';
-  if (e < q && q < w) return 'Ｅ ➜ Ｑ ➜ Ｗ';
+  const first = Math.min(q, w, e);
+  const last = Math.max(q, w, e);
+  if (first === q && last === e) return 'Ｑ ➜ Ｗ ➜ Ｅ';
+  if (first === q && last === w) return 'Ｑ ➜ Ｅ ➜ Ｗ';
+  if (first === w && last === e) return 'Ｗ ➜ Ｑ ➜ Ｅ';
+  if (first === w && last === q) return 'Ｗ ➜ Ｅ ➜ Ｑ';
+  if (first === e && last === q) return 'Ｅ ➜ Ｗ ➜ Ｑ';
+  if (first === e && last === w) return 'Ｅ ➜ Ｑ ➜ Ｗ';
 }
 
 function parseRuneIcon(runePage) {
