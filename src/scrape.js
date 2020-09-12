@@ -100,12 +100,12 @@ scrapeSkills = async (champ, role) => {
 
 function buildSkillsPrint(skills) {
   let skillsPrint = '';
-  skillsPrint += '─────────────────────────────────────────────────';
+  skillsPrint += '───────────────────────────────────────────────────';
   skillsPrint += buildSkillRow(skills, 'Q', ' Ｑ', ' ・');
   skillsPrint += buildSkillRow(skills, 'W', ' Ｗ', ' ・');
   skillsPrint += buildSkillRow(skills, 'E', ' Ｅ', ' ・');
   skillsPrint += buildSkillRow(skills, 'R', ' Ｒ', ' ・');
-  skillsPrint += '─────────────────────────────────────────────────\n';
+  skillsPrint += '\n───────────────────────────────────────────────────\n';
   skillsPrint += shortSkillRow(skills);
   return skillsPrint;
 }
@@ -113,7 +113,6 @@ function buildSkillsPrint(skills) {
 function buildSkillRow(skills, spell, spellGlyph, nullGlyph) {
   let skillsPrint = '';
   skillsPrint += '\n';
-  //   skillsPrint += spell;
   for (let i = 0; i < 18; i++) {
     skillsPrint += skills[i] === spell ? spellGlyph : nullGlyph;
   }
