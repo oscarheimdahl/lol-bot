@@ -123,12 +123,14 @@ function shortSkillRow(skills) {
   const q = skills.lastIndexOf('Q');
   const w = skills.lastIndexOf('W');
   const e = skills.lastIndexOf('E');
-  if (q < w && q < e && w < e) return 'Ｑ ➜ Ｗ ➜ Ｅ';
-  if (q < w && q < e && e < w) return 'Ｑ ➜ Ｅ ➜ Ｗ';
-  if (w < q && w < e && q < e) return 'Ｗ ➜ Ｑ ➜ Ｅ';
-  if (w < q && w < e && e < q) return 'Ｗ ➜ Ｅ ➜ Ｑ';
-  if (e < q && e < w && w < q) return 'Ｅ ➜ Ｗ ➜ Ｑ';
-  if (e < q && e < w && q < w) return 'Ｅ ➜ Ｑ ➜ Ｗ';
+  const first = Math.min(q, w, e);
+  const last = Math.max(q, w, e);
+  if (first === q && last === e) return 'Ｑ ➜ Ｗ ➜ Ｅ';
+  if (first === q && last === w) return 'Ｑ ➜ Ｅ ➜ Ｗ';
+  if (first === w && last === e) return 'Ｗ ➜ Ｑ ➜ Ｅ';
+  if (first === w && last === q) return 'Ｗ ➜ Ｅ ➜ Ｑ';
+  if (first === e && last === q) return 'Ｅ ➜ Ｗ ➜ Ｑ';
+  if (first === e && last === w) return 'Ｅ ➜ Ｑ ➜ Ｗ';
 }
 
 function parseRuneIcon(runePage) {
