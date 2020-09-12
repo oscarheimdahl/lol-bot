@@ -92,9 +92,7 @@ scrapeSkills = async (champ, role) => {
       }
       message = buildSkillsPrint(Object.values(order));
     })
-    .catch((e) => {
-      console.log(e)((message = notFound));
-    });
+    .catch((e) => (message = notFound));
   return { message };
 };
 
