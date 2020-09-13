@@ -4,7 +4,6 @@ const notFound = '❌ Champ not found ';
 
 scrapeBuild = async (champ, role) => {
   champ = champ.replace(/\s/g, '');
-  console.log(`https://champion.gg/champion/${champ}/${role}`);
   const scrapeAll = await axios
     .get(`https://champion.gg/champion/${champ}/${role}`)
     .then((res) => {
