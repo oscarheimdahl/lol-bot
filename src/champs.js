@@ -2,6 +2,7 @@ champsNicknames = {
   yi: 'Master Yi',
   mundo: 'Dr Mundo',
   shyv: 'Shyvana',
+  harpooner: 'Pyke',
 };
 
 module.exports = {
